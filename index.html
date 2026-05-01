@@ -121,7 +121,6 @@ body{
 /* ══════════════════════════════════════
    LIVE SCREEN
 ══════════════════════════════════════ */
-/* Connection banner */
 .conn-banner{border-radius:13px;padding:18px 16px;margin-bottom:14px;border:1px solid;display:flex;gap:12px;align-items:flex-start;}
 .conn-banner.disconnected{background:var(--warn-bg);border-color:var(--warn-bd);}
 .conn-banner.connected{background:var(--safe-bg);border-color:var(--safe-bd);}
@@ -202,7 +201,7 @@ canvas{width:100%!important;display:block;border-radius:9px;}
 .pg-sub{font-size:13px;color:var(--sub);margin-bottom:18px;}
 .filter-bar{display:flex;gap:7px;overflow-x:auto;padding-bottom:2px;margin-bottom:16px;scrollbar-width:none;}
 .filter-bar::-webkit-scrollbar{display:none;}
-.fbtn{flex-shrink:0;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg1);color:var(--sub);font-family:'DM Sans',sans-serif;transition:all .15s;}
+.fbtn{flex-shrink:0;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border2);background:var(--bg1);color:var(--sub);font-family:'DM Sans',sans-serif;transition:all .15px;}
 .fbtn.on{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 3px 12px rgba(43,122,111,.22);}
 .fbtn:active{transform:scale(.95);}
 .hcards{display:flex;flex-direction:column;gap:10px;}
@@ -319,7 +318,6 @@ canvas{width:100%!important;display:block;border-radius:9px;}
     <!-- ── LIVE ── -->
     <div class="screen on" id="sc-live">
 
-      <!-- Connection banner — populated dynamically by setBannerDisconnected() -->
       <div class="conn-banner disconnected" id="conn-banner">
         <div class="cb-icon">📡</div>
         <div style="flex:1">
@@ -384,13 +382,12 @@ canvas{width:100%!important;display:block;border-radius:9px;}
           <div class="zm-row"><div class="zm-name">Heel</div><div class="zm-bar-bg"><div class="zm-bar-fill" id="zb-HF" style="width:0%;background:var(--safe);"></div></div><div class="zm-pct" id="zp-HF">0%</div></div>
         </div>
         <div style="margin-top:12px;display:flex;gap:12px;flex-wrap:wrap;">
-          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);"><div style="width:10px;height:10px;border-radius:2px;background:var(--safe)"></div>Safe &lt; ${Math.round(SAFE_KPA)} kPa</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);"><div style="width:10px;height:10px;border-radius:2px;background:var(--warn)"></div>Warning ≥ ${Math.round(WARN_KPA)} kPa</div>
-          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);"><div style="width:10px;height:10px;border-radius:2px;background:var(--danger)"></div>Danger ≥ ${Math.round(DANGER_KPA)} kPa</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);"><div style="width:10px;height:10px;border-radius:2px;background:var(--safe)"></div>Safe</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);"><div style="width:10px;height:10px;border-radius:2px;background:var(--warn)"></div>Warning</div>
+          <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--sub);"><div style="width:10px;height:10px;border-radius:2px;background:var(--danger)"></div>Danger</div>
         </div>
       </div>
 
-      <!-- Save reading button -->
       <button style="width:100%;background:var(--accent);color:#fff;border:none;border-radius:13px;padding:16px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 18px rgba(43,122,111,.25);transition:all .15s;margin-bottom:8px;" onclick="saveSnapshot()" id="save-btn">
         💾 Save Current Reading to History
       </button>
@@ -400,11 +397,7 @@ canvas{width:100%!important;display:block;border-radius:9px;}
     <div class="screen" id="sc-sug">
       <div class="pg-title">Suggestions</div>
       <div class="pg-sub">Based on your current live pressure readings.</div>
-
-      <!-- Auto-updating suggestion cards -->
       <div id="sug-cards" style="margin-bottom:16px;"></div>
-
-      <!-- Medical treatments -->
       <div class="two-col">
         <div class="treat-card">
           <div class="treat-title"><span>🏥</span>Medical Treatments</div>
@@ -429,8 +422,6 @@ canvas{width:100%!important;display:block;border-radius:9px;}
           </div>
         </div>
       </div>
-
-      <!-- Ayurvedic / home remedies -->
       <div class="ayu-section">
         <div class="ayu-title">🌿 Home Remedies & Ayurvedic Tips</div>
         <div class="ayu-list">
@@ -444,7 +435,6 @@ canvas{width:100%!important;display:block;border-radius:9px;}
           <div class="ayu-row"><div class="ayu-icon">🍃</div><div><strong>Ashwagandha + guduchi decoction</strong> — supports nerve health (consult doctor before use).</div></div>
         </div>
       </div>
-
       <div class="card" style="text-align:center;padding:14px;">
         <div style="font-size:12px;color:var(--sub);line-height:1.7;">⚠️ Ayurvedic remedies are <strong style="color:var(--ink)">complementary care only</strong>. Never replace prescribed medication. Always consult your doctor.</div>
       </div>
@@ -484,18 +474,17 @@ canvas{width:100%!important;display:block;border-radius:9px;}
         <button class="save-btn" onclick="saveProf()">💾 Save Details</button>
         <button class="logout-btn" onclick="if(confirm('Logout?'))doLogout()">🔓 Logout</button>
       </div>
-
-      <!-- Sensor info card -->
       <div class="card" style="margin-top:0;">
         <div class="card-title"><span>🔧</span>ESP32 FSR Sensor Info</div>
         <div style="display:flex;flex-direction:column;gap:8px;">
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Connection</span><span style="font-family:'DM Mono',monospace;font-weight:600;">Bluetooth BLE</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">BLE Device Name</span><span style="font-family:'DM Mono',monospace;font-weight:600;">DiaFoot</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Service UUID</span><span style="font-family:'DM Mono',monospace;font-weight:600;font-size:10px;">12345678-1234-1234-1234-123456789abc</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Active Sensors</span><span style="font-family:'DM Mono',monospace;font-weight:600;">4 FSR Zones</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Hallux (HA)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 34</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Medial Forefoot (M1)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 35</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Hallux (HA)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 35</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Medial Forefoot (M1)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 33</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Lateral Forefoot (M5)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 32</span></div>
-          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Heel (HF)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 25</span></div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Heel (HF)</span><span style="font-family:'DM Mono',monospace;font-weight:600;">GPIO 34</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">VCC</span><span style="font-family:'DM Mono',monospace;font-weight:600;">3.3V</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);"><span style="color:var(--sub)">Pull-down resistor</span><span style="font-family:'DM Mono',monospace;font-weight:600;">10 kΩ each</span></div>
           <div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;"><span style="color:var(--sub)">Sample rate</span><span style="font-family:'DM Mono',monospace;font-weight:600;">200 ms (5 Hz)</span></div>
@@ -508,7 +497,6 @@ canvas{width:100%!important;display:block;border-radius:9px;}
 
   </div><!-- /scroller -->
 
-  <!-- Bottom nav -->
   <div class="bnav">
     <div class="ni on" id="nav-live" onclick="goSc('live')"><div class="ni-icon">📡</div><div class="ni-lbl">Live</div></div>
     <div class="ni" id="nav-sug" onclick="goSc('sug')"><div class="ni-icon">💡</div><div class="ni-lbl">Advice</div></div>
@@ -528,14 +516,12 @@ const PATIENT_HEIGHT_CM   = 167.0;
 const PAPER_AVG_WEIGHT_KG = 62.0;
 const NORMAL_BMI_REF      = 22.0;
 
-// Compute Correction Factor (CF) — same formula as Arduino
 const H_m = PATIENT_HEIGHT_CM / 100.0;
 const BMI = PATIENT_WEIGHT_KG / (H_m * H_m);
 const WF  = PATIENT_WEIGHT_KG / PAPER_AVG_WEIGHT_KG;
 const BF  = BMI / NORMAL_BMI_REF;
 const CF  = (WF + BF) / 2.0;
 
-// Base thresholds from paper (matches Arduino #defines)
 const BASE_SAFE_KPA    = 200.0;
 const BASE_WARNING_KPA = 335.0;
 const BASE_DANGER_KPA  = 402.0;
@@ -547,14 +533,13 @@ const BASE_PTI_ENT_SAFE   = 187.95;
 const BASE_PTI_ENT_WARN   = 202.20;
 const BASE_PTI_ENT_DANGER = 263.56;
 
-const FR_ULCER_RISK = 1.53;
-const HEEL_MIN_KPA  = 10.0;
+const FR_ULCER_RISK    = 1.53;
+const HEEL_MIN_KPA     = 10.0;
 const FOOT_CONTACT_KPA = 5.0;
 
-// Personalised thresholds (CF-scaled)
-const SAFE_KPA    = BASE_SAFE_KPA    * CF;
-const WARN_KPA    = BASE_WARNING_KPA * CF;
-const DANGER_KPA  = BASE_DANGER_KPA  * CF;
+const SAFE_KPA   = BASE_SAFE_KPA    * CF;
+const WARN_KPA   = BASE_WARNING_KPA * CF;
+const DANGER_KPA = BASE_DANGER_KPA  * CF;
 
 const PTI_FF_SAFE    = BASE_PTI_FF_SAFE    * CF;
 const PTI_FF_WARN    = BASE_PTI_FF_WARN    * CF;
@@ -562,6 +547,12 @@ const PTI_FF_DANGER  = BASE_PTI_FF_DANGER  * CF;
 const PTI_ENT_SAFE   = BASE_PTI_ENT_SAFE   * CF;
 const PTI_ENT_WARN   = BASE_PTI_ENT_WARN   * CF;
 const PTI_ENT_DANGER = BASE_PTI_ENT_DANGER * CF;
+
+/* ════════════════════════════════════════
+   ★ CHANGED: UUIDs now match the Arduino .ino
+════════════════════════════════════════ */
+const BLE_SERVICE = '12345678-1234-1234-1234-123456789abc';
+const BLE_RX_CHAR = 'abcd1234-ab12-ab12-ab12-abcdef123456';
 
 /* ════════════════════════════════════════
    ZONE CONFIG
@@ -573,14 +564,13 @@ const ZONES = [
   { id:'HF', name:'Heel',              safeMax:SAFE_KPA, warnMax:WARN_KPA, pin:34 },
 ];
 
-// Legacy aliases used by chart functions
 const DANGER_PP  = DANGER_KPA;
 const WARN_PP    = WARN_KPA;
 const DANGER_TI  = PTI_ENT_DANGER;
 const WARN_TI    = PTI_ENT_WARN;
 
 const WINDOW_SEC = 10;
-const UPDATE_MS  = 200;  // 200ms = 5 readings/sec — matches ESP32 LOOP_DELAY + BLE notify rate
+const UPDATE_MS  = 200;
 
 /* ════════════════════════════════════════
    STATE
@@ -589,20 +579,16 @@ let _scans    = JSON.parse(localStorage.getItem('dflive3') || '[]');
 let _usr      = { name:'', phone:'', age:'', fbs:'', city:'' };
 let _hf       = 'all';
 let _simTimer  = null;
-let _serialReader = null;
 let _isConnected  = false;
 let _isSim        = false;
-let _simT         = 0;    // sim time counter
+let _simT         = 0;
 
-// Rolling data buffers
 let _ppBuf    = [];
 let _tiBuf    = [];
 let _zonePres = { HA:0, M1:0, M5:0, HF:0 };
 let _peakPP   = 0;
 let _totalTI  = 0;
-let _labels   = [];
 
-// PTI & step tracking (matches Arduino logic)
 let _pti_forefoot = 0.0;
 let _pti_entire   = 0.0;
 let _footOnGround = false;
@@ -612,7 +598,7 @@ let _frRatio      = 0.0;
 let _frValid      = false;
 
 /* ════════════════════════════════════════
-   CANVAS CHARTS — pure canvas, no lib
+   CANVAS CHARTS
 ════════════════════════════════════════ */
 const PPCanvas = document.getElementById('chart-pp');
 const TICanvas = document.getElementById('chart-ti');
@@ -637,8 +623,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
   const W     = canvas.width / dpr;
   const H     = canvas.height / dpr;
   ctx.clearRect(0, 0, W, H);
-
-  // Background
   ctx.fillStyle = '#f7f4ef';
   ctx.fillRect(0, 0, W, H);
 
@@ -656,7 +640,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
 
   const max = maxVal || (Math.max(...data) * 1.25) || 200;
 
-  // Grid lines
   ctx.strokeStyle = '#e5ddd3';
   ctx.lineWidth = 0.8;
   for (let i = 0; i <= 4; i++) {
@@ -668,7 +651,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
     ctx.fillText(Math.round(max * i/4), padL-4, y+3.5);
   }
 
-  // Danger threshold line
   if (dangerY && dangerY <= max) {
     const dy = padT + cH - (dangerY/max)*cH;
     ctx.setLineDash([5,4]);
@@ -678,7 +660,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
     ctx.setLineDash([]);
   }
 
-  // Gradient fill under curve
   const grad = ctx.createLinearGradient(0, padT, 0, padT+cH);
   grad.addColorStop(0, color + '55');
   grad.addColorStop(1, color + '08');
@@ -696,7 +677,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
   ctx.fillStyle = grad;
   ctx.fill();
 
-  // Line
   ctx.beginPath();
   pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
   ctx.strokeStyle = color;
@@ -704,7 +684,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
   ctx.lineJoin = 'round';
   ctx.stroke();
 
-  // Last value dot
   const last = pts[pts.length-1];
   ctx.beginPath();
   ctx.arc(last.x, last.y, 4, 0, Math.PI*2);
@@ -715,7 +694,6 @@ function drawLineChart(canvas, data, color, dangerY, unit, maxVal) {
   ctx.arc(last.x, last.y, 2, 0, Math.PI*2);
   ctx.fill();
 
-  // X labels
   ctx.fillStyle = '#b8a898';
   ctx.font = '400 9px DM Mono, monospace';
   ctx.textAlign = 'center';
@@ -785,7 +763,7 @@ function updateKPIs(pp, pti_ent, fr, rc) {
 }
 
 /* ════════════════════════════════════════
-   SUGGESTIONS (auto-updates)
+   SUGGESTIONS
 ════════════════════════════════════════ */
 function updateSuggestions(pp, pti_ent, fr, rc) {
   const cards = [];
@@ -816,40 +794,8 @@ function updateSuggestions(pp, pti_ent, fr, rc) {
 }
 
 /* ════════════════════════════════════════
-   PROCESS INCOMING DATA
-   ESP32 prints: "Raw: X | V: Xv | Force: XN | Pressure: X Pa (X kPa)"
-   Multi-sensor: we expect 5 lines per reading (one per zone)
-   or a JSON line: {"HA":95.2,"M1":112.1,"M5":98.3,"MF":80.1,"HF":162.5}
+   PUSH READING — used by both BLE and SIM
 ════════════════════════════════════════ */
-let _lineBuffer = '';
-let _zoneBuffer = {};
-
-function processLine(line) {
-  line = line.trim();
-  if (!line) return;
-
-  // JSON format: {"HA":95.2,"M1":112.1,"M5":98.3,"HF":162.5}
-  if (line.startsWith('{')) {
-    try {
-      const data = JSON.parse(line);
-      ZONES.forEach(z => { if (data[z.id] !== undefined) _zonePres[z.id] = parseFloat(data[z.id]); });
-      pushReading();
-      return;
-    } catch(e) {}
-  }
-
-  // Single sensor fallback: "Pressure: X Pa (X.XX kPa)"
-  const kpaMatch = line.match(/\((\d+\.?\d*)\s*kPa\)/i);
-  if (kpaMatch) {
-    const kpa = parseFloat(kpaMatch[1]);
-    _zonePres.HA = kpa;
-    _zonePres.M1 = kpa * 1.08;
-    _zonePres.M5 = kpa * 1.02;
-    _zonePres.HF = kpa * 1.55;
-    pushReading();
-  }
-}
-
 function pushReading() {
   const HA = _zonePres.HA, M1 = _zonePres.M1, M5 = _zonePres.M5, HF = _zonePres.HF;
 
@@ -858,7 +804,6 @@ function pushReading() {
   const ppp_entire   = ppp_forefoot + ppp_heel;
   const maxPPP       = Math.max(HA, M1, M5, HF);
 
-  // FR ratio
   _frValid = (ppp_heel > HEEL_MIN_KPA);
   _frRatio = _frValid ? (ppp_forefoot / ppp_heel) : 0;
 
@@ -867,9 +812,9 @@ function pushReading() {
 
   if (currentlyOnGround) {
     if (!_footOnGround) {
-      _footOnGround    = true;
-      _pti_forefoot    = 0.0;
-      _pti_entire      = 0.0;
+      _footOnGround = true;
+      _pti_forefoot = 0.0;
+      _pti_entire   = 0.0;
       _stepCount++;
     }
     _pti_forefoot += ppp_forefoot * DELTA_T;
@@ -878,25 +823,21 @@ function pushReading() {
     _footOnGround = false;
   }
 
-  // Classify risk — PPP (per-sensor)
   let pppLevel = 0;
   [HA, M1, M5, HF].forEach(v => {
     if (v >= DANGER_KPA) pppLevel = Math.max(pppLevel, 2);
     else if (v >= WARN_KPA) pppLevel = Math.max(pppLevel, 1);
   });
 
-  // Classify risk — PTI
   let ptiLevel = 0;
   if (_pti_forefoot >= PTI_FF_DANGER || _pti_entire >= PTI_ENT_DANGER) ptiLevel = 2;
   else if (_pti_forefoot >= PTI_FF_WARN || _pti_entire >= PTI_ENT_WARN) ptiLevel = 1;
 
-  // Classify risk — FR ratio
   let frLevel = (_frValid && _frRatio > FR_ULCER_RISK) ? 1 : 0;
 
   const finalLevel = Math.max(pppLevel, ptiLevel, frLevel);
   const rc = finalLevel === 2 ? 'danger' : finalLevel === 1 ? 'warn' : 'safe';
 
-  // Rolling chart buffers
   const maxSamples = (WINDOW_SEC * 1000) / UPDATE_MS;
   _ppBuf.push(maxPPP);
   if (_ppBuf.length > maxSamples) _ppBuf.shift();
@@ -913,14 +854,57 @@ function pushReading() {
 }
 
 /* ════════════════════════════════════════
-   WEB BLUETOOTH BLE — connect to ESP32
-   ESP32 advertises as "DiaFoot"
-   Service UUID : 6E400001-B5A3-F393-E0A9-E50E24DCCA9E  (Nordic UART)
-   RX Char UUID : 6E400003-B5A3-F393-E0A9-E50E24DCCA9E  (notify — ESP32→phone)
+   ★ CHANGED: onBTData — now reads the JSON
+     your ESP32 actually sends instead of
+     the old Nordic UART text stream
 ════════════════════════════════════════ */
-const BLE_SERVICE = '6e400001-b5a3-f393-e0a9-e50e24dcca9e';
-const BLE_RX_CHAR = '6e400003-b5a3-f393-e0a9-e50e24dcca9e';
+function onBTData(event) {
+  const raw = new TextDecoder().decode(event.target.value);
 
+  let d;
+  try { d = JSON.parse(raw.trim()); } catch(e) { return; }
+
+  // ESP32 sends {idle:true} when foot is off ground — skip it
+  if (d.idle) return;
+
+  // Feed zone pressures directly from ESP32 computed values
+  _zonePres.HA = d.HA  || 0;
+  _zonePres.M1 = d.M1  || 0;
+  _zonePres.M5 = d.M5  || 0;
+  _zonePres.HF = d.HF  || 0;
+
+  // Use PTI values directly from ESP32 (already computed there)
+  _pti_forefoot = d.ptiFF  || 0;
+  _pti_entire   = d.ptiEnt || 0;
+  _frRatio      = d.fr     || 0;
+  _frValid      = d.frValid || false;
+  _stepCount    = d.step   || _stepCount;
+  _alertCount   = d.alerts || _alertCount;
+
+  // Map risk string to level number
+  const riskMap = { 'SAFE':0, 'WARNING':1, 'DANGER':2 };
+  const finalLevel = riskMap[d.risk] !== undefined ? riskMap[d.risk] : d.riskLevel || 0;
+  const rc = finalLevel === 2 ? 'danger' : finalLevel === 1 ? 'warn' : 'safe';
+
+  const maxPPP = Math.max(_zonePres.HA, _zonePres.M1, _zonePres.M5, _zonePres.HF);
+
+  // Rolling buffers
+  const maxSamples = (WINDOW_SEC * 1000) / UPDATE_MS;
+  _ppBuf.push(maxPPP);
+  if (_ppBuf.length > maxSamples) _ppBuf.shift();
+  _totalTI = _pti_entire;
+  _tiBuf.push(_totalTI);
+  if (_tiBuf.length > maxSamples) _tiBuf.shift();
+  _peakPP = maxPPP;
+
+  updateKPIs(maxPPP, _pti_entire, _frRatio, rc);
+  updateZoneMap();
+  drawCharts();
+}
+
+/* ════════════════════════════════════════
+   WEB BLUETOOTH — connect
+════════════════════════════════════════ */
 let _btDevice = null;
 let _btChar   = null;
 
@@ -963,14 +947,6 @@ async function connectSerial() {
   }
 }
 
-function onBTData(event) {
-  const value = new TextDecoder().decode(event.target.value);
-  _lineBuffer += value;
-  const lines = _lineBuffer.split('\n');
-  _lineBuffer = lines.pop();
-  lines.forEach(processLine);
-}
-
 function onBTDisconnected() {
   _isConnected = false;
   setBannerDisconnected();
@@ -986,7 +962,7 @@ async function disconnectBT() {
 }
 
 /* ════════════════════════════════════════
-   SIMULATION — realistic diabetic foot pattern
+   SIMULATION
 ════════════════════════════════════════ */
 function startSim() {
   if (_simTimer) { clearInterval(_simTimer); }
@@ -1001,17 +977,15 @@ function startSim() {
 
   _simTimer = setInterval(() => {
     _simT++;
-    const t     = _simT * 0.2;                          // time in seconds
-    const walk  = Math.sin(t * 0.8) * 0.25 + 1;        // gentle gait cycle
-    const drift = Math.min(1.4, 1 + _simT * 0.0008);   // very slow pressure creep
+    const t     = _simT * 0.2;
+    const walk  = Math.sin(t * 0.8) * 0.25 + 1;
+    const drift = Math.min(1.4, 1 + _simT * 0.0008);
 
-    // Values start around 40% of safe threshold, gradually rise
     _zonePres.HA = (SAFE_KPA * 0.38 + Math.sin(t*1.1)*20 + Math.random()*12) * walk * drift;
     _zonePres.M1 = (SAFE_KPA * 0.46 + Math.sin(t*0.9)*25 + Math.random()*15) * walk * drift;
     _zonePres.M5 = (SAFE_KPA * 0.42 + Math.sin(t*1.2)*22 + Math.random()*12) * walk * drift;
     _zonePres.HF = (SAFE_KPA * 0.60 + Math.sin(t*0.6)*30 + Math.random()*18) * walk;
 
-    // After 2 minutes simulate a danger episode
     if (_simT > 600) {
       _zonePres.M1 *= 1.5;
       _zonePres.HA *= 1.4;
@@ -1073,7 +1047,6 @@ function setBannerDisconnected() {
     setBannerNoSerial();
   }
 }
-
 function setBannerNoSerial() {
   const b = document.getElementById('conn-banner');
   b.className = 'conn-banner disconnected';
@@ -1093,7 +1066,6 @@ function setBannerNoSerial() {
   </div>`;
   document.getElementById('connect-btn').style.display = 'none';
 }
-
 function handleConnectBtn() {
   if (!('bluetooth' in navigator)) {
     setBannerNoSerial();
@@ -1106,6 +1078,11 @@ function handleConnectBtn() {
 /* ════════════════════════════════════════
    SAVE SNAPSHOT
 ════════════════════════════════════════ */
+function riskClass(pp, ti, fr) {
+  if (pp >= DANGER_KPA || ti >= PTI_ENT_DANGER) return 'danger';
+  if (pp >= WARN_KPA   || ti >= PTI_ENT_WARN)   return 'warn';
+  return 'safe';
+}
 function saveSnapshot() {
   if (_ppBuf.length === 0) { showToast('No data yet — run a scan first!','err'); return; }
   const pp = _peakPP;
@@ -1121,7 +1098,6 @@ function saveSnapshot() {
   });
   localStorage.setItem('dflive3', JSON.stringify(_scans));
   showToast('✅ Reading saved!','ok');
-  // Reset time integral for next session
   _tiBuf = []; _totalTI = 0;
 }
 
@@ -1267,9 +1243,7 @@ function boot() {
   document.getElementById('pf-c').value  = _usr.city  || '';
   setCanvasSize();
   drawCharts();
-  // Initialize banner with browser-aware state
   setBannerDisconnected();
-  // Default suggestions
   updateSuggestions(0, 0, 0, 'safe');
 }
 function saveProf() {
@@ -1296,7 +1270,6 @@ function showToast(msg, type='ok') {
   _tt = setTimeout(() => el.classList.remove('show'), 3000);
 }
 
-/* Boot canvas */
 window.addEventListener('load', () => { setCanvasSize(); drawCharts(); });
 </script>
 </body>
